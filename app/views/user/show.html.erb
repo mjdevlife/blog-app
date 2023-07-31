@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>"Blog Website"</title>
+  <%= stylesheet_link_tag 'user/show' , media: 'all' , 'data-turbolinks-track' => 'reload' %>
+</head>
+
+<body>
+
+  <div class="subParentContent">
+    <% @user.tap do |user| %>
+    <div class="contentIconName">
+      <div class="contentIcon">
+        <img src=<%= user.photo %> alt:"User Display Image" class="contentIcon" />
+      </div>
+      <div class="contentNamePost">
+        <h2 class="name"><%= user.name %></h2>
+        <h3 class="numberPosts">Number of posts: <%= user.posts_counter %></h3>
+      </div>
+    </div>
+    <div class="bio">
+      <p class="InBio"> Bio <br><br>
+        <%= user.bio %>
+      </p>
+
+    </div>
+    <% end %>
+
+    <ul id="posts_li">
+      <% @user.latest_posts.each_with_index do |post, index| %>
+      <li id="p_item">
+        <h2 class="numPost">Post <%= (index + 1) %></h2>
+        <p class="textPost">
+          <%= post.text %>
+        </p>
+        <h3 class="comLikesPost">Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %> </h3>
+      </li>
+      <% end %>
+    </ul>
+    <%= link_to "<button>Add Post</button>".html_safe, add_post_path, :class => 'seeAllpostsButton' %>
+    <%= link_to "<button>See All Posts</button>".html_safe, index_posts_url(:user_id => @user.id), :class => 'seeAllpostsButton' %>
+    <button>Pagination</button>
+  </div>
+  </div>
+</body>
+</html>

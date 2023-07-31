@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>"Blog Website"</title>
+    <%= stylesheet_link_tag 'post/index', media: 'all', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+  
+  <div class="subParentContent">
+  <div class="contentIconName"> 
+    <div class="contentIcon">
+      <img src=<%= @user.photo %> alt:"User Display Image" class="contentIcon" />
+    </div> 
+    <div class="contentNamePost">
+      <h2 class="name">
+        <%= @user.name %>
+      </h2>
+      <h3 class="numberPosts">
+        Number of posts: <%= @user.posts_counter %>
+      </h3> 
+    </div> 
+  </div>
+  <ul id="posts_li">
+    <% @user.posts.each_with_index do |post, index| %>
+    <li id="p_item"> 
+        <div class="postSection">  <h2 class="numPost">Post <%= index + 1 %> </h2>
+          <p class="textPost">
+            <%= post.text %>
+          </p>
+          <h3 class="comLikesPost">
+            Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %>
+          </h3>
+        </div>
+        <div class="commentSection">
+          <% @user.comments.each_with_index do |comment, index| %>
+          <% if comment.author_id == post.id %>
+          <div class="commentByUser">
+            <h2 class="userComment">Comment <%= index + 1 %>
+              <h3 class="commentMessage"><%= comment.text %> </h3>
+            </h2>
+          </div>
+          <% end %>
+          <% end %>
+        </div>
+        <%= form_with url: create_like_path, model: Like do |form| %>
+        <%= form.hidden_field :post_id, value: @post_id %>
+        <div>
+          <%= form.submit "Like post" %>
+        </div>
+        <% end %>
+        <%= link_to "<button>Add Comment</button>".html_safe, new_comment_url(@user), :class => 'seeAllpostsButton' %>
+    </li>
+    <% end %>
+  </ul>
+  </div>
+  </div>
+  </div>
+  </body>
+</html>
